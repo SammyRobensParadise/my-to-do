@@ -1,5 +1,5 @@
 
-//CSS variables
+/*
 const titleStyle = {
     color: '#000000',
     textAlign: 'center',
@@ -8,13 +8,16 @@ const titleStyle = {
 }
 
 const paraStyle = {
-    color: '#000000',
+    color: 'red',
     textAlign: 'center',
     marginTop: '60px',
-    marginBotton: '30px'
+    marginBotton: '30px',
+    marginLeft: "60px",
+    marginRight: '60px'
 }
 const inputStyle = {
     backgroundColor: '#adadad',
     marginLeft: '20px',
     marginRight: '20px'
 }
+*/

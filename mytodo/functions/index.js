@@ -32,5 +32,10 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
   // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
   return snapshot.ref.parent.child('uppercase').set(uppercase);
 });
-
+exports.addUser - functions.database.ref('/new/{pushID}/users/name')
+.onCreate((snapshot, context) =>{
+  const name = snapshot.val();
+  console.log("sending",name);
+  return snapshot.ref.parent.child('name').set(name);
+})
 });

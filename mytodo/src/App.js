@@ -56,6 +56,7 @@ class App extends React.Component {
       this.setState({
         validName: true
       })
+      userNameInput = userNameInput.toLowerCase();
     }
   }
   CheckCorrectNumberFormat = () => {

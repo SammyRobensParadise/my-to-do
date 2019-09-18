@@ -16,9 +16,6 @@ exports.addMessage = functions.https.onRequest(async (req, res) => {
     // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
     res.redirect(303, snapshot.ref.toString());
   });
-exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello from Firebase!");
-
  // Listens for new messages added to /messages/:pushId/original and creates an
 // uppercase version of the message to /messages/:pushId/uppercase
 exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
@@ -38,4 +35,4 @@ exports.addUser - functions.database.ref('/new/{pushID}/users/name')
   console.log("sending",name);
   return snapshot.ref.parent.child('name').set(name);
 })
-});
+

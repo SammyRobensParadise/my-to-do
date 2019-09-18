@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
+import axios from 'axios';
 import titleStyle from './style'
 import paraStyle from './style'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
@@ -57,6 +58,8 @@ class App extends React.Component {
         validName: true
       })
       userNameInput = userNameInput.toLowerCase();
+      this.sendDataName(userNameInput);
+
     }
   }
   CheckCorrectNumberFormat = () => {
@@ -110,66 +113,81 @@ class App extends React.Component {
       })
     }
   }
+  getUser = async(dataname) =>{
+    try {
+      const response = await axios.get('https://us-central1-my-to-do-db.cloudfunctions.net/addUser?text='+dataname);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  sendDataName = (dataname) => {
+    this.getUser(dataname)
+  }
   render() {
     const defaultState = (!this.state.hasAuthToken && !this.state.hasUploadErrors && !this.state.hasNameErrors && !this.state.hasNumberErrors && !this.state.noDataMatch && !this.state.hasAuthTokenErrors);
     const errorState = (this.state.hasAuthToken || this.state.hasUploadErrors || this.state.hasNameErrors || this.state.hasNumberErrors || this.state.noDataMatch || this.state.hasAuthTokenErrors)
-    if (defaultState) {
-      return (
-        <div className="App">
-          <h1 style={titleStyle}>Welcome to the To-DOs</h1>
-          <p style={paraStyle}>Enter your name and whatsapp phone number</p>
-          <Form>
-            <FormGroup>
-              <Label for="first name">First Name</Label>
-              <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type='text' name="name" id="name-input-form" placeholder="ex: josh" />
-            </FormGroup>
-            <FormGroup>
-              <Label for="number">Whats-app Number</Label>
-              <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type="text" name="whats-app-num" id="whats-app-num-form" placeholder="ex: 123-456-7890" />
-            </FormGroup>
-            <FormGroup>
-              <Label for="number">Activation Token</Label>
-              <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type="text" name="activation-token" id="activation-token-form" placeholder="token" />
-            </FormGroup>
-            <Button style={{ backgroundColor: '#33cc33', height: "2rem", width: '6rem', marginTop: '30px', borderRadius: '3px 3px 3px 3px' }} onClick={this.validateInputsAndSend}>Submit</Button>
-          </Form>
-          <p style={paraStyle}>What is To-DOs? Its a small app that will send you a whatsapp notification reminding you what you must do for that day!</p>
-          <p style={paraStyle}>All you need to do is input your whatsapp phone number and your first name, an activation token and you should be good to go!</p>
-        </div>
-      );
-    } else if (errorState) {
-      return (
-        <div className="App">
-          <h1 style={titleStyle}>Welcome to the To-DOs</h1>
-          <p style={paraStyle}>Enter your name and whatsapp phone number</p>
-          <p style={{ color: 'red' }}>The following errors occured:</p>
-          <p style={{ color: 'red' }}>{this.state.ErrorMessageName + "   (" + this.state.hasNameErrorsIndex + ")"}</p>
-          <p style={{ color: 'red' }}>{this.state.ErrorMessageNumber + "   (" + this.state.hasNumberErrorsIndex + ")"}</p>
-          <p style={{ color: 'red' }}>{this.state.ErrorMessageAuthToken + "   (" + this.state.hasAuthTokenErrorsIndex + ")"}</p>
+    const validDataState = (this.state.validAuthToken && this.state.validName && this.state.validNumber);
+    if (validDataState) {
+      return <div className="App"><p>loading... Do not close your browser window</p></div>
+    } else
+      if (defaultState) {
+        return (
+          <div className="App">
+            <h1 style={titleStyle}>Welcome to the To-DOs</h1>
+            <p style={paraStyle}>Enter your name and whatsapp phone number</p>
+            <Form>
+              <FormGroup>
+                <Label for="first name">First Name</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type='text' name="name" id="name-input-form" placeholder="ex: josh" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="number">Whats-app Number</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type="text" name="whats-app-num" id="whats-app-num-form" placeholder="ex: 123-456-7890" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="number">Activation Token</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type="text" name="activation-token" id="activation-token-form" placeholder="token" />
+              </FormGroup>
+              <Button style={{ backgroundColor: '#33cc33', height: "2rem", width: '6rem', marginTop: '30px', borderRadius: '3px 3px 3px 3px' }} onClick={this.validateInputsAndSend}>Submit</Button>
+            </Form>
+            <p style={paraStyle}>What is To-DOs? Its a small app that will send you a whatsapp notification reminding you what you must do for that day!</p>
+            <p style={paraStyle}>All you need to do is input your whatsapp phone number and your first name, an activation token and you should be good to go!</p>
+          </div>
+        );
+      } else if (errorState) {
+        return (
+          <div className="App">
+            <h1 style={titleStyle}>Welcome to the To-DOs</h1>
+            <p style={paraStyle}>Enter your name and whatsapp phone number</p>
+            <p style={{ color: 'red' }}>The following errors occured:</p>
+            <p style={{ color: 'red' }}>{this.state.ErrorMessageName + "   (" + this.state.hasNameErrorsIndex + ")"}</p>
+            <p style={{ color: 'red' }}>{this.state.ErrorMessageNumber + "   (" + this.state.hasNumberErrorsIndex + ")"}</p>
+            <p style={{ color: 'red' }}>{this.state.ErrorMessageAuthToken + "   (" + this.state.hasAuthTokenErrorsIndex + ")"}</p>
 
-          <Form>
-            <FormGroup>
-              <Label for="first name">First Name</Label>
-              <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type='text' name="name" id="name-input-form" placeholder="ex: josh" />
-            </FormGroup>
-            <FormGroup>
-              <Label for="number">Whats-app Number</Label>
-              <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type="text" name="whats-app-num" id="whats-app-num-form" placeholder="ex: 123-456-7890" />
-            </FormGroup>
-            <FormGroup>
-              <Label for="number">Activation Token</Label>
-              <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type="text" name="activation-token" id="activation-token-form" placeholder="token" />
-            </FormGroup>
-            <Button style={{ backgroundColor: '#33cc33', height: "2rem", width: '6rem', marginTop: '30px', borderRadius: '3px 3px 3px 3px' }} onClick={this.validateInputsAndSend}>Submit</Button>
-          </Form>
-          <p style={paraStyle}>What is To-DOs? Its a small app that will send you a whatsapp notification reminding you what you must do for that day!</p>
-          <p style={paraStyle}>All you need to do is input your whatsapp phone number and your first name, an activation token and you should be good to go!</p>
-        </div>
-      )
-    } else {
-      return (<p> 403: An unknown error occured :(
+            <Form>
+              <FormGroup>
+                <Label for="first name">First Name</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type='text' name="name" id="name-input-form" placeholder="ex: josh" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="number">Whats-app Number</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type="text" name="whats-app-num" id="whats-app-num-form" placeholder="ex: 123-456-7890" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="number">Activation Token</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type="text" name="activation-token" id="activation-token-form" placeholder="token" />
+              </FormGroup>
+              <Button style={{ backgroundColor: '#33cc33', height: "2rem", width: '6rem', marginTop: '30px', borderRadius: '3px 3px 3px 3px' }} onClick={this.validateInputsAndSend}>Submit</Button>
+            </Form>
+            <p style={paraStyle}>What is To-DOs? Its a small app that will send you a whatsapp notification reminding you what you must do for that day!</p>
+            <p style={paraStyle}>All you need to do is input your whatsapp phone number and your first name, an activation token and you should be good to go!</p>
+          </div>
+        )
+      } else {
+        return (<p> 403: An unknown error occured :(
     </p>)
-    }
+      }
   }
 }
 export default App;

@@ -16,8 +16,13 @@ exports.addMessage = functions.https.onRequest(async (req, res) => {
     // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
     res.redirect(303, snapshot.ref.toString());
   });
- // Listens for new messages added to /messages/:pushId/original and creates an
-// uppercase version of the message to /messages/:pushId/uppercase
+
+exports.addUser = functions.https.onRequest(async (req,res) =>{
+  const name = req.query.text;
+  const snapshot = await admin.database().ref('/new/users').push({name: name});
+  res.redirect(303, snapshot.ref.toString());
+})
+
 exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
 .onCreate((snapshot, context) => {
   // Grab the current value of what was written to the Realtime Database.
@@ -29,10 +34,5 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
   // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
   return snapshot.ref.parent.child('uppercase').set(uppercase);
 });
-exports.addUser - functions.database.ref('/new/{pushID}/users/name')
-.onCreate((snapshot, context) =>{
-  const name = snapshot.val();
-  console.log("sending",name);
-  return snapshot.ref.parent.child('name').set(name);
-})
+
 

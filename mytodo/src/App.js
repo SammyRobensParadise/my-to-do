@@ -36,10 +36,8 @@ class App extends React.Component {
   CheckCorrectNameFormat = () => {
     let userNameInput = document.getElementById('name-input-form').value;
     userNameInput.toString();
-    console.log(userNameInput)
     let __space = ' ';
     if (userNameInput.includes(__space) || userNameInput === null || userNameInput === "") {
-      console.log(true);
       var currentErrorMessage = this.state.ErrorMessageName;
       var currentErrorMessageIndex = this.state.hasNameErrorsIndex;
       if (this.state.hasNameErrors) {
@@ -69,7 +67,6 @@ class App extends React.Component {
       userNumberInput = userNumberInput.replace("-", "");
       userNumberInput = userNumberInput.replace(" ", "");
     }
-    console.log(userNumberInput);
     if (userNumberInput.match(/[a-z]/i) || userNumberInput === null || userNumberInput === "") {
       var currentErrorMessage = this.state.ErrorMessageNumber;
       var currentErrorMessageIndex = this.state.hasNameErrorsIndex;

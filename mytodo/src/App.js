@@ -113,16 +113,7 @@ class App extends React.Component {
       })
     }
   }
-  getUser = async(dataname) =>{
-    try {
-      const response = await axios.get('https://us-central1-my-to-do-db.cloudfunctions.net/addUser?text='+dataname);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  }
   sendDataName = (dataname) => {
-    this.getUser(dataname)
   }
   render() {
     const defaultState = (!this.state.hasAuthToken && !this.state.hasUploadErrors && !this.state.hasNameErrors && !this.state.hasNumberErrors && !this.state.noDataMatch && !this.state.hasAuthTokenErrors);

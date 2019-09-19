@@ -3,6 +3,7 @@ import './App.css';
 import axios from 'axios';
 import titleStyle from './style';
 import paraStyle from './style';
+import * as firebase from 'firebase'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 class App extends React.Component {
   constructor(props) {

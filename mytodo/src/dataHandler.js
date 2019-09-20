@@ -5,7 +5,7 @@ export default class dataHander {
             apiKey: "AIzaSyBQjROjDE6Kap7JF-BomwGBITtMunusvZM",
             authDomain: "https://my-to-do-db.firebaseapp.com/",
             databaseURL: "https://my-to-do-db.firebaseio.com/",
-            storageBucket: "http://my-to-do-db.appspot.com/"
+            storageBucket: "gs://my-to-do-db.appspot.com/"
           };
           firebase.initializeApp(config);
                 this.state = {
@@ -15,6 +15,14 @@ export default class dataHander {
             dataHandlerTobeRecieved: recieveData,
             db: firebase.database()
         }
+    }
+    writeInitialSetupCredentials = (Name,whatsappNumber,activationToken) => {
+        this.state.db.ref('users/'+Name).set({
+            username: Name,
+            localNumnber: whatsappNumber,
+            aToken: activationToken
+        })
+
     }
 
 }

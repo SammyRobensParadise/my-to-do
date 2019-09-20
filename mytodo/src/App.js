@@ -4,7 +4,9 @@ import axios from 'axios';
 import titleStyle from './style';
 import paraStyle from './style';
 import * as firebase from 'firebase'
+import dataHandler from './dataHandler'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import dataHander from './dataHandler';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -112,6 +114,8 @@ class App extends React.Component {
     }
   }
   sendDataName = (dataname) => {
+    var db = new dataHander();
+    db.writeInitialSetupCredentials(dataname,null,null)
   }
   render() {
     const defaultState = (!this.state.hasAuthToken && !this.state.hasUploadErrors && !this.state.hasNameErrors && !this.state.hasNumberErrors && !this.state.noDataMatch && !this.state.hasAuthTokenErrors);

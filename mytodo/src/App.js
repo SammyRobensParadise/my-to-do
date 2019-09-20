@@ -27,9 +27,19 @@ class App extends React.Component {
       validName: false,
       validNumber: false,
       validAuthToken: false,
+      name: "",
+      hasValidName: false,
+      whatsappNumber: "",
+      hasValidWhatsappNumber: false,
+      AuthToken: "",
+      hasValidAuthTokenFORMAT: false
     }
   }
   componentDidUpdate() {
+    if(this.state.hasValidAuthTokenFORMAT && this.state.hasValidName && this.state.hasValidWhatsappNumber){
+      let db = new dataHander();
+      db.writeInitialSetupCredentials(this.state.name,this.state.whatsappNumber,this.state.AuthToken)
+    }
   }
   validateInputsAndSend = () => {
     this.CheckCorrectNameFormat();
@@ -59,8 +69,7 @@ class App extends React.Component {
         validName: true
       })
       userNameInput = userNameInput.toLowerCase();
-      this.sendDataName(userNameInput);
-
+      this.StoreNameDataToState(userNameInput)
     }
   }
   CheckCorrectNumberFormat = () => {
@@ -88,6 +97,7 @@ class App extends React.Component {
       this.setState({
         validNumber: true
       })
+      this.StoreWhatsappNumberDataToState(userNumberInput);
     }
   }
   CheckCorrectAuthTokenFormat = () => {
@@ -111,11 +121,26 @@ class App extends React.Component {
       this.setState({
         validAuthToken: true
       })
+      this.StoreAuthTokenDataToState(userActivationToken)
     }
   }
-  sendDataName = (dataname) => {
-    var db = new dataHander();
-    db.writeInitialSetupCredentials(dataname,null,null)
+  StoreNameDataToState = dataname => {
+    this.setState({
+      name: dataname,
+      hasValidName: true
+    });
+  }
+  StoreWhatsappNumberDataToState = datanumber => {
+    this.setState({
+      whatsappNumber: datanumber,
+      hasValidWhatsappNumber: true
+    })
+  }
+  StoreAuthTokenDataToState = authtoken => {
+    this.setState({
+      AuthToken: authtoken,
+      hasValidAuthTokenFORMAT: true
+    })
   }
   render() {
     const defaultState = (!this.state.hasAuthToken && !this.state.hasUploadErrors && !this.state.hasNameErrors && !this.state.hasNumberErrors && !this.state.noDataMatch && !this.state.hasAuthTokenErrors);

@@ -32,13 +32,20 @@ class App extends React.Component {
       whatsappNumber: "",
       hasValidWhatsappNumber: false,
       AuthToken: "",
-      hasValidAuthTokenFORMAT: false
+      hasValidAuthTokenFORMAT: false,
+      hasCorrectAdminCreds: false,
+      adminUsername: "",
+      adminPassword: ""
     }
   }
   componentDidUpdate() {
-    if(this.state.hasValidAuthTokenFORMAT && this.state.hasValidName && this.state.hasValidWhatsappNumber){
+    if (this.state.hasValidAuthTokenFORMAT && this.state.hasValidName && this.state.hasValidWhatsappNumber) {
       let db = new dataHander();
-      db.writeInitialSetupCredentials(this.state.name,this.state.whatsappNumber,this.state.AuthToken)
+      db.writeInitialSetupCredentials(this.state.name, this.state.whatsappNumber, this.state.AuthToken)
+    }
+    if (this.state.hasCorrectAdminCreds) {
+      let db = new dataHander();
+      db.writeAdminCredsForValidation(this.state.adminUsername, this.state.adminPassword)
     }
   }
   validateInputsAndSend = () => {
@@ -124,6 +131,18 @@ class App extends React.Component {
       this.StoreAuthTokenDataToState(userActivationToken)
     }
   }
+  VerifyAdminCreds = () => {
+    const usernameAdmin = document.getElementById('admin-input-form').value;
+    const passwordAdmin = document.getElementById('admin-input-form-pswd').value;
+    if ((usernameAdmin && passwordAdmin) !== '') {
+      this.setState({
+        hasCorrectAdminCreds: true,
+        adminUsername: usernameAdmin,
+        adminPassword: passwordAdmin
+      })
+    }
+
+  }
   StoreNameDataToState = dataname => {
     this.setState({
       name: dataname,
@@ -171,6 +190,17 @@ class App extends React.Component {
             </Form>
             <p style={paraStyle}>What is To-DOs? Its a small app that will send you a whatsapp notification reminding you what you must do for that day!</p>
             <p style={paraStyle}>All you need to do is input your whatsapp phone number and your first name, an activation token and you should be good to go!</p>
+            <Form>
+              <FormGroup>
+                <Label for="first name">Admin Login</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type='text' name="name" id="admin-input-form" placeholder="ex: josh" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="password">Password</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type='text' name="name" id="admin-input-form-pswd" placeholder="xxxxxxxxxx" />
+              </FormGroup>
+              <Button style={{ backgroundColor: '#33cc33', height: "2rem", width: '6rem', marginTop: '30px', borderRadius: '3px 3px 3px 3px' }} onClick={this.VerifyAdminCreds}>Access</Button>
+            </Form>
           </div>
         );
       } else if (errorState) {
@@ -200,6 +230,17 @@ class App extends React.Component {
             </Form>
             <p style={paraStyle}>What is To-DOs? Its a small app that will send you a whatsapp notification reminding you what you must do for that day!</p>
             <p style={paraStyle}>All you need to do is input your whatsapp phone number and your first name, an activation token and you should be good to go!</p>
+            <Form>
+              <FormGroup>
+                <Label for="first name">Admin Login</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type='text' name="name" id="admin-input-form" placeholder="ex: josh" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="password">Password</Label>
+                <Input style={{ backgroundColor: ' #f2f2f2', marginLeft: '20px', marginTop: '30px' }} type='text' name="name" id="admin-input-form-pswd" placeholder="xxxxxxxxxx" />
+              </FormGroup>
+              <Button style={{ backgroundColor: '#33cc33', height: "2rem", width: '6rem', marginTop: '30px', borderRadius: '3px 3px 3px 3px' }} onClick={this.VerifyAdminCreds}>Access</Button>
+            </Form>
           </div>
         )
       } else {

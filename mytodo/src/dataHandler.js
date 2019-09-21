@@ -17,12 +17,20 @@ export default class dataHander {
         }
     }
     writeInitialSetupCredentials = (Name,whatsappNumber,activationToken) => {
-        this.state.db.ref('users/'+Name).set({
+        let d = new Date()
+        let id = d.getTime()
+        this.state.db.ref('users/'+id+'/').set({
             username: Name,
             localNumnber: whatsappNumber,
             aToken: activationToken
         })
-
     }
-
+    writeAdminCredsForValidation = (Name,password) =>{
+        let d = new Date()
+        let id = d.getTime()
+        this.state.db.ref('admin_attempt/'+ id + '/').set({
+            username: Name,
+            password: password
+        })
+    }
 }
